@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: "Times New Roman";
+  Padding-top: 80px;
+
+}
+
+#nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  gap: 30px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  list-style: none;
+  padding: 20px;
+}
+
+.img{font-size: 25px;
+      text-align: center;
+      padding-bottom: 10px;
+    border-bottom: 2px solid black;}
+
+.profile img {
+  margin-top: 5rem;
+  border: 5px double gray;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+article {
+  scroll-margin-top: 90px;
+}
+
+#nav a{color:white;}
+
+#nav a:hover{color:red;}
+
+
+
+a:visited{color: blue;}
+
+html{scroll-behavior: smooth;}
+
+.abt{font-size:20px;
+     margin-left: 0.5rem;
+    box-sizing: border-box;
+     word-spacing: 0.1em;}
+
+h2{text-decoration: underline;}
+
+#Hobbies{font-size: 20px;}
+
+.edu{list-style: none;
+     font-size: 20px;}
+
+.edu li:first-child {
+  list-style-type: square;
+}
+
+.hob li{list-style-type: square;}
+
+#Skills{font-size: 20px;}
+
+.skills{margin-left: 0.5rem;}
+
+.skills dd {
+  position: relative;
+  margin-left: 25px;
+  margin-bottom: 6px;
+}
+
+.skills dd::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  background-color: black;
+}
+
+.Projects{font-size: 20px;}
+.projects dt {
+  position: relative;
+  margin-left: 20px;
+  margin-top: 25px;
+  font-weight: 600;
+}
+
+.projects dt::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 6px;
+  width:6px;
+  height:6px;
+  background-color: black;
+}
+
+#Contact{font-size:20px;}
+
+.Contact li{list-style-type: square;}
+
+#Adithya{font-size: 20px;}
+
+article{margin-bottom: 60px;}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
