@@ -2,7 +2,6 @@ body {
   margin: 0;
   font-family: "Times New Roman";
   Padding-top: 80px;
-  overflow-x: hidden;
 
 }
 
@@ -22,7 +21,8 @@ body {
   margin: 0;
   list-style: none;
   padding: 20px 10px;
-
+  white-space:no-wrap;
+  overflow-x:auto;
   box-sizing: border-box;
 }
 
