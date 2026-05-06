@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: "Times New Roman";
   Padding-top: 80px;
+  overflow-x: hidden;
 
 }
 
@@ -10,15 +11,18 @@ body {
   justify-content: center;
   align-items: center;
   background-color: black;
-  gap: 30px;
+  gap: 20px;
 
   position: fixed;
   top: 0;
   left: 0;
+  right: 0; 
   width: 100%;
+
   margin: 0;
   list-style: none;
-  padding: 20px;
+  padding: 20px 10px;
+
   box-sizing: border-box;
 }
 
