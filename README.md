@@ -55,4 +55,6 @@ This project represents my journey toward becoming a tech-driven builder focused
 - Add JavaScript interactivity  
 - Improve responsive design for mobile  
 - Add animations and UI enhancements  
-- Expand project section with real-world applications  
+- Expand project section with real-world applications
+
+  check it out here----->https://luminalyric.github.io/Portfolio/
