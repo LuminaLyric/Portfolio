@@ -36,10 +36,6 @@ img/ → Images (profile, assets)
 - Learning Tracker – Workflow and systems thinking experiment  
 - AI Chatbot Experiment – Basic AI interaction and prompt testing  
 
----
-
-## 🔗 Live Demo
-https://yourusername.github.io/your-repo/
 
 ---
 
