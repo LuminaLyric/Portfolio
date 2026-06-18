@@ -2,160 +2,1610 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="Author" content="S Adithya" />
-    <title>My Self-profile</title>
-    <link rel="stylesheet" href="Portfolio.css" />
-    <link rel="icon" href="A.ico" type="image/x-icon">
+    <meta name="author" content="S Adithya" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S Adithya — Frontend Developer &amp; Systems Builder</title>
+    <link
+      rel="icon"
+      href=A.ico/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============ TOKENS ============ */
+      :root {
+        --void: #0b0e14;
+        --panel: #11151d;
+        --panel-2: #161b25;
+        --ink: #e7edf3;
+        --mint: #5eead4;
+        --amber: #f2b872;
+        --violet: #b895f8;
+
+        --border: rgba(231, 237, 243, 0.09);
+        --border-strong: rgba(231, 237, 243, 0.16);
+        --muted: rgba(231, 237, 243, 0.52);
+        --muted-2: rgba(231, 237, 243, 0.34);
+
+        --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --sans: "IBM Plex Sans", -apple-system, Segoe UI, sans-serif;
+
+        --sidebar-w: 252px;
+        --maxw: 980px;
+        --radius: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--void);
+        color: var(--ink);
+        font-family: var(--sans);
+        line-height: 1.6;
+        background-image: radial-gradient(
+          circle at 1px 1px,
+          rgba(231, 237, 243, 0.05) 1px,
+          transparent 1px
+        );
+        background-size: 28px 28px;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: var(--mono);
+      }
+      p {
+        margin: 0;
+      }
+      ::selection {
+        background: var(--mint);
+        color: var(--void);
+      }
+      :focus-visible {
+        outline: 2px solid var(--mint);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        color: var(--mint);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .eyebrow::before {
+        content: "//";
+        color: var(--muted-2);
+      }
+
+      .pill {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        padding: 4px 10px;
+        border: 1px solid var(--border-strong);
+        border-radius: 100px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      /* ============ LAYOUT SHELL ============ */
+      .menu-toggle {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 60;
+        width: 42px;
+        height: 42px;
+        background: var(--panel);
+        border: 1px solid var(--border-strong);
+        border-radius: 8px;
+        color: var(--ink);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .menu-toggle span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--ink);
+        position: relative;
+      }
+      .menu-toggle span::before,
+      .menu-toggle span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 18px;
+        height: 2px;
+        background: var(--ink);
+      }
+      .menu-toggle span::before {
+        top: -6px;
+      }
+      .menu-toggle span::after {
+        top: 6px;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(2px);
+        z-index: 45;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: var(--sidebar-w);
+        background: var(--panel);
+        border-right: 1px solid var(--border);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        padding: 28px 22px;
+        transform: translateX(-100%);
+        transition: transform 0.28s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-brand {
+        margin-bottom: 8px;
+      }
+      .sidebar-brand .name {
+        font-family: var(--mono);
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+      .sidebar-brand .role {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .sidebar-close {
+        position: absolute;
+        top: 24px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: none;
+      }
+
+      .filetree {
+        margin-top: 34px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+      }
+      .filetree-label {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--muted-2);
+        margin-bottom: 10px;
+        letter-spacing: 0.04em;
+      }
+      .tree-link {
+        font-family: var(--mono);
+        font-size: 0.86rem;
+        color: var(--muted);
+        padding: 9px 10px;
+        border-radius: 6px;
+        border-left: 2px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      .tree-link::before {
+        content: "›";
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        color: var(--mint);
+        width: 10px;
+      }
+      .tree-link span {
+        color: var(--muted-2);
+      }
+      .tree-link:hover {
+        background: var(--panel-2);
+        color: var(--ink);
+      }
+      .tree-link.active {
+        color: var(--mint);
+        border-left-color: var(--mint);
+        background: var(--panel-2);
+      }
+      .tree-link.active::before {
+        opacity: 1;
+      }
+
+      .sidebar-foot {
+        margin-top: auto;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--mint);
+        flex: none;
+        box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .status-dot {
+          animation: pulse 2.4s ease-in-out infinite;
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.45;
+        }
+      }
+
+      .sidebar-socials {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .sidebar-socials a {
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--border-strong);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .sidebar-socials a:hover {
+        color: var(--mint);
+        border-color: var(--mint);
+      }
+
+      .main {
+        padding: 0 24px 0;
+      }
+
+      @media (min-width: 1024px) {
+        .menu-toggle {
+          display: none;
+        }
+        .sidebar {
+          transform: translateX(0);
+          position: fixed;
+        }
+        .sidebar-close {
+          display: none;
+        }
+        .overlay {
+          display: none;
+        }
+        .main {
+          margin-left: var(--sidebar-w);
+          padding: 0 56px;
+        }
+      }
+
+      section {
+        max-width: var(--maxw);
+        margin: 0 auto;
+        padding: 96px 0 0;
+        scroll-margin-top: 24px;
+      }
+      section:last-of-type {
+        padding-bottom: 80px;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+
+      /* ============ HERO ============ */
+      .hero {
+        padding-top: 120px;
+      }
+      @media (min-width: 1024px) {
+        .hero {
+          padding-top: 84px;
+        }
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 28px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 760px) {
+        .hero-grid {
+          grid-template-columns: 1.3fr 0.7fr;
+          align-items: start;
+        }
+      }
+
+      .terminal {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.7);
+      }
+      .terminal-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11px 16px;
+        border-bottom: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+      .terminal-bar .path {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .terminal-bar .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .terminal-bar .dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border-strong);
+      }
+      .terminal-online {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--mint);
+      }
+
+      .terminal-body {
+        font-family: var(--mono);
+        font-size: clamp(0.86rem, 0.75rem + 0.4vw, 0.98rem);
+        padding: 26px 24px 30px;
+        min-height: 220px;
+      }
+      .term-line {
+        margin-bottom: 14px;
+      }
+      .term-prompt {
+        color: var(--violet);
+      }
+      .term-cmd {
+        color: var(--ink);
+      }
+      .term-out {
+        color: var(--mint);
+        display: block;
+        margin-top: 6px;
+        padding-left: 18px;
+      }
+      .term-out .dim {
+        color: var(--muted);
+      }
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 1.05em;
+        background: var(--mint);
+        margin-left: 4px;
+        vertical-align: -2px;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .cursor {
+          animation: blink 1s steps(1) infinite;
+        }
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .photo-card {
+        border: 1px dashed var(--border-strong);
+        border-radius: var(--radius);
+        background: var(--panel);
+        aspect-ratio: 3/4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+        padding: 20px;
+        color: var(--muted-2);
+        overflow: hidden;
+        position: relative;
+      }
+      .photo-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+      }
+      .photo-card .ph-icon {
+        font-size: 1.6rem;
+        color: var(--muted);
+      }
+      .photo-card .ph-text {
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        line-height: 1.5;
+      }
+      .photo-card .ph-text b {
+        color: var(--amber);
+        font-weight: 500;
+      }
+
+      .scroll-cue {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 36px;
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        color: var(--muted-2);
+      }
+      .scroll-cue .line {
+        width: 24px;
+        height: 1px;
+        background: var(--border-strong);
+      }
+
+      /* ============ ABOUT — annotated lines ============ */
+      .code-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .code-lines {
+        display: flex;
+        flex-direction: column;
+      }
+      .code-line {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        gap: 18px;
+        padding: 13px 20px 13px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.98rem;
+      }
+      .code-line:last-child {
+        border-bottom: none;
+      }
+      .code-line .ln {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--muted-2);
+        text-align: right;
+        padding-top: 2px;
+        user-select: none;
+      }
+      .code-line p {
+        color: rgba(231, 237, 243, 0.86);
+      }
+      .code-line .kw {
+        color: var(--violet);
+        font-family: var(--mono);
+      }
+      .code-line .str {
+        color: var(--mint);
+      }
+
+      /* ============ HOBBIES — array literal ============ */
+      .array-block {
+        font-family: var(--mono);
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+      }
+      .array-block .bracket {
+        color: var(--muted-2);
+      }
+      .array-items {
+        padding-left: 22px;
+      }
+      .array-item {
+        color: var(--mint);
+        font-size: 0.96rem;
+        padding: 6px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+      .array-item::before {
+        content: '"';
+        color: var(--mint);
+      }
+      .array-item::after {
+        content: '",';
+        color: var(--muted-2);
+      }
+      .array-item span {
+        color: var(--ink);
+        margin-left: 2px;
+      }
+
+      /* ============ EDUCATION — json card ============ */
+      .json-card {
+        font-family: var(--mono);
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px 26px;
+        font-size: 0.92rem;
+      }
+      .json-card .punct {
+        color: var(--muted-2);
+      }
+      .json-row {
+        padding: 6px 0 6px 22px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .json-key {
+        color: var(--violet);
+      }
+      .json-val {
+        color: var(--mint);
+      }
+      .json-num {
+        color: var(--amber);
+      }
+      .json-arr {
+        color: var(--mint);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 0;
+      }
+
+      /* ============ SKILLS — grid of cards ============ */
+      .skills-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 680px) {
+        .skills-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .skill-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+      }
+      .skill-card .skey {
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        color: var(--amber);
+        margin-bottom: 14px;
+        display: block;
+      }
+      .skill-card .skey::after {
+        content: ":";
+        color: var(--muted-2);
+      }
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        padding: 5px 11px;
+        border: 1px solid var(--border-strong);
+        border-radius: 6px;
+        color: var(--ink);
+      }
+
+      /* ============ PROJECTS — pipeline ============ */
+      .pipeline {
+        position: relative;
+        padding-left: 30px;
+      }
+      .pipeline::before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        bottom: 6px;
+        width: 2px;
+        background: linear-gradient(
+          to bottom,
+          var(--mint),
+          var(--violet),
+          var(--amber),
+          var(--mint)
+        );
+        opacity: 0.35;
+      }
+      .node {
+        position: relative;
+        margin-bottom: 34px;
+      }
+      .node:last-child {
+        margin-bottom: 0;
+      }
+      .node-dot {
+        position: absolute;
+        left: -30px;
+        top: 8px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--void);
+        border: 2px solid var(--mint);
+      }
+      .node.placeholder .node-dot {
+        border-color: var(--muted-2);
+      }
+      .node.placeholder .node-dot::after {
+        content: none;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .node:not(.placeholder) .node-dot::after {
+          content: "";
+          position: absolute;
+          inset: -5px;
+          border-radius: 50%;
+          border: 1px solid var(--mint);
+          opacity: 0;
+          animation: ripple 2.6s ease-out infinite;
+        }
+      }
+      @keyframes ripple {
+        0% {
+          transform: scale(0.6);
+          opacity: 0.6;
+        }
+        100% {
+          transform: scale(1.8);
+          opacity: 0;
+        }
+      }
+
+      .node-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+      }
+      .node.placeholder .node-card {
+        border-style: dashed;
+        border-color: var(--border-strong);
+        background: transparent;
+      }
+
+      .node-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .node-id {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--muted-2);
+      }
+      .node-title {
+        font-family: var(--mono);
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .node-status {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        padding: 3px 9px;
+        border-radius: 100px;
+        border: 1px solid;
+        white-space: nowrap;
+      }
+      .node-status.live {
+        color: var(--mint);
+        border-color: rgba(94, 234, 212, 0.4);
+      }
+      .node-status.active {
+        color: var(--amber);
+        border-color: rgba(242, 184, 114, 0.4);
+      }
+      .node-status.experimental {
+        color: var(--violet);
+        border-color: rgba(184, 149, 248, 0.4);
+      }
+      .node-status.empty {
+        color: var(--muted-2);
+        border-color: var(--border-strong);
+      }
+
+      .node-desc {
+        color: rgba(231, 237, 243, 0.78);
+        font-size: 0.95rem;
+        margin-bottom: 14px;
+      }
+      .node.placeholder .node-desc {
+        color: var(--muted-2);
+        font-family: var(--mono);
+        font-size: 0.86rem;
+      }
+      .node-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .node-links a {
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--ink);
+        border: 1px solid var(--border-strong);
+        border-radius: 6px;
+        padding: 6px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .node-links a:hover {
+        border-color: var(--mint);
+        color: var(--mint);
+      }
+
+      @media (min-width: 900px) {
+        .pipeline {
+          padding-left: 0;
+        }
+        .pipeline::before {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .node {
+          width: calc(50% - 28px);
+        }
+        .node:nth-child(odd) {
+          margin-right: auto;
+        }
+        .node:nth-child(even) {
+          margin-left: auto;
+        }
+        .node-dot {
+          left: auto;
+          top: 8px;
+        }
+        .node:nth-child(odd) .node-dot {
+          right: -34px;
+        }
+        .node:nth-child(even) .node-dot {
+          left: -34px;
+        }
+      }
+
+      /* ============ CONTACT ============ */
+      .term-commands {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .cmd-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 0.92rem;
+        transition: background 0.15s ease;
+      }
+      .cmd-row:last-child {
+        border-bottom: none;
+      }
+      .cmd-row:hover {
+        background: var(--panel-2);
+      }
+      .cmd-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--ink);
+        flex-wrap: wrap;
+      }
+      .cmd-left .prompt {
+        color: var(--violet);
+      }
+      .cmd-left .target {
+        color: var(--mint);
+        word-break: break-all;
+      }
+      .cmd-arrow {
+        color: var(--muted-2);
+        flex: none;
+      }
+
+      /* ============ FOOTER ============ */
+      .site-footer {
+        border-top: 1px solid var(--border);
+        padding: 34px 0 40px;
+        max-width: var(--maxw);
+        margin: 0 auto;
+      }
+      .footer-commit {
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .footer-commit .hash {
+        color: var(--amber);
+      }
+      .footer-commit .branch {
+        color: var(--violet);
+      }
+      .footer-commit .msg {
+        color: var(--mint);
+      }
+      .footer-note {
+        margin-top: 14px;
+        font-family: var(--mono);
+        font-size: 0.74rem;
+        color: var(--muted-2);
+      }
+
+      @media (max-width: 759px) {
+        section {
+          padding-top: 72px;
+        }
+        .terminal-body {
+          padding: 22px 18px 26px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <nav class="navbar">
-  <div class="logo">S Adithya</div>
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      aria-label="Open navigation"
+      aria-expanded="false"
+    >
+      <span></span>
+    </button>
+    <div class="overlay" id="overlay"></div>
 
-  <ul class="nav-links">
-    <li><a href="#Aboutme">About</a></li>
-    <li><a href="#Hobbies">Hobbies</a></li>
-    <li><a href="#Education">Education</a></li>
-    <li><a href="#Skills">Skills</a></li>
-    <li><a href="#Projects">Projects</a></li>
-    <li><a href="#Contact">Contact</a></li>
-  </ul>
+    <aside class="sidebar" id="sidebar">
+      <button
+        class="sidebar-close"
+        id="sidebarClose"
+        aria-label="Close navigation"
+      >
+        ✕
+      </button>
+      <div class="sidebar-brand">
+        <div class="name">S Adithya</div>
+        <div class="role">Frontend Developer · Automation Builder</div>
+      </div>
 
-  <div class="hamburger" onclick="toggleMenu()">
-    ☰
-  </div>
-</nav>
-    </header>
-    <article class="img">
-      <figure class="profile">
-        <img
-          src="img/Portfolioimg.jpeg"
-          alt="profile photo"
-          width="300"
-          height="400"
-        />
-      </figure>
-      <figcaption>S Adithya</figcaption>
-      <figcaption>Student, Builder, and Tech Enthusiast</figcaption>
-    </article>
-    <article id="Aboutme">
-      <h2>About me:</h2>
-      <p class="abt">
-        I’m a student passionate about automation, emerging technologies, and
-        building efficient systems. I enjoy exploring how workflows, AI tools,
-        and digital solutions can simplify processes and solve real-world
-        problems. Recently, I’ve been working on automation workflows and
-        experimenting with AI concepts like Model Context Protocol (MCP),
-        focusing on systems thinking and process optimization. Beyond
-        technology, I’m interested in product thinking, business strategy, and
-        how digital systems can create scalable and impactful solutions. I’m
-        currently developing hands-on skills in automation, AI tools, and
-        problem-solving while building toward becoming a tech-driven builder and
-        entrepreneur.
-      </p>
-    </article>
-    <article id="Hobbies">
-      <h2>Hobbies:</h2>
-        <ul class="hob"> 
-          <li>Football</li>
-          <li>Reading Books</li>
-          <li>Learning new skills</li>
-          <li>Cycling</li>
-          <li>Watching movies, series and shows</li>
-        </ul>
-    </article>
-    <article id="Education">
-      <h2>Education:</h2>
-        <ul class="edu">
-          <li>Higher Secondary Education (Class 12)</li>
-          <li>SKNS PMC Vivekananda Vidyalaya Junior College, Perambur, Chennai</li>
-          <li>Completed in 2026</li>
-          <li>Studied core subjects including Physics, chemistry, Mathematics and Computer science.</li> 
-          <li>Developed an early interest in automation, systems thinking, and technology-driven problem solving through self-initiated learning and projects.</li>
-    </article>
-    <article id="Skills" class="section">
-  <h2>Skills:</h2>
-  <dl class="skills">
-    <dt><strong>Skills</strong></dt>
-    <dd>HTML, CSS (Flexbox), JavaScript (Fundamentals)</dd>
-    <dd>Python (2 years academic + practical experience)</dd>
-    <dd>SQL (2 years academic + database fundamentals)</dd>
-    <br>
-    
-    <dt><strong>Tools & Platforms</strong></dt>
-    <dd>VS Code</dd>
-    <dd>Git (Basic)</dd>
-    <dd>Zapier for Automation</dd>
-    <dd>Py Idle</dd>
-    <dd>My sql command client</dd>
-    <dd>AI-assistance(claude code, Chatgpt, Gemini... etc)</dd>
-    <br>
-    
-    <dt><strong>Core Interests</strong></dt>
-    <dd>Workflow Automation</dd>
-    <dd>AI Concepts (MCP)</dd>
-    <dd>Systems Thinking</dd>
-    <br>
+      <nav class="filetree" aria-label="Section navigation">
+        <p class="filetree-label">portfolio /</p>
+        <a href="#about" class="tree-link" data-section="about"
+          >about<span>.js</span></a
+        >
+        <a href="#hobbies" class="tree-link" data-section="hobbies"
+          >hobbies<span>.js</span></a
+        >
+        <a href="#education" class="tree-link" data-section="education"
+          >education<span>.json</span></a
+        >
+        <a href="#skills" class="tree-link" data-section="skills"
+          >skills<span>.json</span></a
+        >
+        <a href="#projects" class="tree-link" data-section="projects"
+          >projects<span>/</span></a
+        >
+        <a href="#contact" class="tree-link" data-section="contact"
+          >contact<span>.md</span></a
+        >
+      </nav>
 
-    <dt><strong>Strengths</strong></dt>
-    <dd>Communication(English, Tamil, Hindi, German)</dd>
-    <dd>Problem Solving</dd>
-    <dd>Process Optimization</dd>
-    <dd>Logical Thinking</dd>
-  </dl>
-</article>
-<article id="Projects" class="Projects">
-  <h2>Projects</h2>
+      <div class="sidebar-socials">
+        <a
+          href="mailto:adithya.k.saravanan@gmail.com"
+          aria-label="Email"
+          title="Email"
+          >✉</a
+        >
+        <a
+          href="https://github.com/LuminaLyric"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          title="GitHub"
+          >⌥</a
+        >
+        <a
+          href="https://www.linkedin.com/in/adithya-saravanan"
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn"
+          title="LinkedIn"
+          >in</a
+        >
+      </div>
 
-  <dl class="projects">
+      <div class="sidebar-foot">
+        <span class="status-dot"></span> open to internships &amp; collabs
+      </div>
+    </aside>
 
-    <dt><strong> Portfolio Website</strong></dt>
-    <dd>Designed and developed a personal portfolio website to showcase my skills and learning journey.</dd>
-    <dd><strong>Tech:</strong> HTML, CSS</dd>
-    <dd><strong>Focus:</strong> Layout design, Flexbox, responsive structure</dd>
-<br>
-    <dt><strong>LinkedIn AI Content Agent</strong></dt>
-    <dd>Developed an AI-assisted system to generate and publish LinkedIn posts, focusing on consistency and content quality.</dd>
-    <dd><strong>Tech:</strong> AI tools, automation workflows</dd>
-    <dd><strong>Focus:</strong> Content automation, prompt design, workflow optimization</dd>
-    
-<br>
-    <dt><strong>Learning Tracker</strong></dt>
-    <dd>Explored automation workflows to understand process optimization and system design.</dd>
-    <dd><strong>Tech:</strong> AI tools, workflow logic</dd>
-    <dd><strong>Focus:</strong> Systems thinking, automation concepts</dd>
-    <dd>
-  <strong>Links:</strong>
-  <a href="https://github.com/LuminaLyric/Zapier-Learning-tracker" target="_blank">GitHub</a>
-</dd>
-<br>
-    <dt><strong>PitchArena Ai</strong></dt>
-    <dd>Built and tested a AI-based startup game chatbot</dd>
-    <dd><strong>Tech:</strong> AI tools</dd>
-    <dd><strong>Focus:</strong> Prompt engineering, user interaction</dd>
-    <dd>
-  <strong>Links:</strong>
-  <a href="https://github.com/LuminaLyric/PitchArena-Ai" target="_blank">GitHub</a>
-  <a href="https://pitch-arena-ai.zapier.app" target="_blank">Pitch arena</a>
-</dd>
-  </dl>
-</article>
-<article id="Contact">
-  <h2>Contact</h2>
-    <ul class="Contact">
-      <li>Gmail:<a href="mailto:adithya.k.saravanan@gmail.com">adithya.k.saravanan@gmail.com</a></li>      
-      <li>LinkedIn:<a href="https://www.linkedin.com/in/adithya-saravanan" target="_blank">adithya-saravanan</a></li>
-    </ul>
-</article>
-<br>
-<footer>
-  <p id="Adithya"><strong>&lt;&lt;&lt;&copy; 2026 S Adithya&gt;&gt;&gt;</strong></p>
-</footer> 
+    <main class="main">
+      <!-- ============ HERO ============ -->
+      <section class="hero" id="top">
+        <div class="hero-grid">
+          <div>
+            <div class="terminal">
+              <div class="terminal-bar">
+                <div class="path">
+                  <div class="dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  adithya@portfolio — zsh
+                </div>
+                <div class="terminal-online">
+                  <span class="status-dot"></span> online
+                </div>
+              </div>
+              <div class="terminal-body" id="termBody"></div>
+            </div>
+
+            <div class="hero-tags">
+              <span class="pill">MCP</span>
+              <span class="pill">Zapier</span>
+              <span class="pill">Python</span>
+              <span class="pill">SQL</span>
+              <span class="pill">Workflow Automation</span>
+            </div>
+
+            <div class="scroll-cue">
+              <span class="line"></span> scroll to read the source
+            </div>
+          </div>
+
+          <div class="photo-card">
+            <div class="ph-icon">▣</div>
+            <div class="ph-text">
+              <img src="img/Portfolioimg.jpeg" alt="Adithya Saravanan" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section id="about">
+        <p class="eyebrow">about.js</p>
+        <h2>About me</h2>
+        <div class="code-card">
+          <div class="code-lines">
+            <div class="code-line">
+              <span class="ln">01</span>
+              <p>
+                I'm a student who gets genuinely curious about
+                <span class="kw">automation</span>, emerging tech, and building
+                systems that quietly do the boring work for you.
+              </p>
+            </div>
+            <div class="code-line">
+              <span class="ln">02</span>
+              <p>
+                I like figuring out how workflows, AI tools, and digital systems
+                fit together to remove friction from real problems.
+              </p>
+            </div>
+            <div class="code-line">
+              <span class="ln">03</span>
+              <p>
+                Lately I've been building automation pipelines and experimenting
+                with <span class="str">Model Context Protocol (MCP)</span> —
+                thinking in systems, not just scripts.
+              </p>
+            </div>
+            <div class="code-line">
+              <span class="ln">04</span>
+              <p>
+                Outside of code, I'm drawn to product thinking and business
+                strategy — how a well-designed system scales.
+              </p>
+            </div>
+            <div class="code-line">
+              <span class="ln">05</span>
+              <p>
+                Right now I'm sharpening my skills in automation, AI tooling,
+                and problem-solving on the way to becoming a
+                <span class="kw">tech-driven builder</span> &amp; entrepreneur.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ HOBBIES ============ -->
+      <section id="hobbies">
+        <p class="eyebrow">hobbies.js</p>
+        <h2>Hobbies</h2>
+        <div class="array-block">
+          <span class="bracket">const hobbies = [</span>
+          <div class="array-items">
+            <div class="array-item">Football</div>
+            <div class="array-item">Reading books</div>
+            <div class="array-item">Learning new skills</div>
+            <div class="array-item">Cycling</div>
+            <div class="array-item">Movies, series &amp; shows</div>
+          </div>
+          <span class="bracket">]</span>
+        </div>
+      </section>
+
+      <!-- ============ EDUCATION ============ -->
+      <section id="education">
+        <p class="eyebrow">education.json</p>
+        <h2>Education</h2>
+        <div class="json-card">
+          <span class="punct">{</span>
+          <div class="json-row">
+            <span class="json-key">"level"</span><span class="punct">:</span>
+            <span class="json-val">"Higher Secondary Education (Class 12)"</span
+            ><span class="punct">,</span>
+          </div>
+          <div class="json-row">
+            <span class="json-key">"institution"</span
+            ><span class="punct">:</span>
+            <span class="json-val"
+              >"SKNS PMC Vivekananda Vidyalaya Junior College, Perambur,
+              Chennai"</span
+            ><span class="punct">,</span>
+          </div>
+          <div class="json-row">
+            <span class="json-key">"completed"</span
+            ><span class="punct">:</span> <span class="json-num">2026</span
+            ><span class="punct">,</span>
+          </div>
+          <div class="json-row">
+            <span class="json-key">"subjects"</span><span class="punct">:</span>
+            <span class="json-arr"
+              >[<span class="json-val">"Physics"</span>,
+              <span class="json-val">"Chemistry"</span>,
+              <span class="json-val">"Mathematics"</span>,
+              <span class="json-val">"Computer Science"</span>]</span
+            ><span class="punct">,</span>
+          </div>
+          <div class="json-row">
+            <span class="json-key">"focus"</span><span class="punct">:</span>
+            <span class="json-val"
+              >"Self-initiated automation &amp; systems-thinking projects"</span
+            >
+          </div>
+          <span class="punct">}</span>
+        </div>
+      </section>
+
+      <!-- ============ SKILLS ============ -->
+      <section id="skills">
+        <p class="eyebrow">skills.json</p>
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skey">languages</span>
+            <div class="tag-row">
+              <span class="tag">HTML</span><span class="tag">CSS (Flexbox)</span
+              ><span class="tag">JavaScript</span>
+              <span class="tag">Python</span><span class="tag">SQL</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skey">tools_and_platforms</span>
+            <div class="tag-row">
+              <span class="tag">VS Code</span><span class="tag">Git</span
+              ><span class="tag">Zapier</span> <span class="tag">Py IDLE</span
+              ><span class="tag">MySQL CLI</span
+              ><span class="tag">Claude / ChatGPT / Gemini</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skey">core_interests</span>
+            <div class="tag-row">
+              <span class="tag">Workflow Automation</span
+              ><span class="tag">AI Concepts (MCP)</span
+              ><span class="tag">Systems Thinking</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skey">strengths</span>
+            <div class="tag-row">
+              <span class="tag">English · Tamil · Hindi · German</span
+              ><span class="tag">Problem Solving</span>
+              <span class="tag">Process Optimization</span
+              ><span class="tag">Logical Thinking</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROJECTS ============ -->
+      <section id="projects">
+        <p class="eyebrow">projects/</p>
+        <h2>Projects</h2>
+
+        <div class="pipeline">
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_01</span>
+                <span class="node-status live">live</span>
+              </div>
+              <div class="node-title">Portfolio Website</div>
+              <p class="node-desc">
+                Designed and built this personal site from scratch to showcase
+                my skills and learning journey — focused on layout, Flexbox, and
+                responsive structure.
+              </p>
+              <div class="tag-row">
+                <span class="tag">HTML</span><span class="tag">CSS</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_02</span>
+                <span class="node-status active">active</span>
+              </div>
+              <div class="node-title">LinkedIn AI Content Agent</div>
+              <p class="node-desc">
+                An AI-assisted system that generates and publishes LinkedIn
+                posts, built for consistency and content quality over time.
+              </p>
+              <div class="tag-row">
+                <span class="tag">AI Tools</span
+                ><span class="tag">Automation Workflows</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_03</span>
+                <span class="node-status experimental">experimental</span>
+              </div>
+              <div class="node-title">Learning Tracker</div>
+              <p class="node-desc">
+                An automation workflow built to explore process optimization and
+                system design hands-on.
+              </p>
+              <div class="tag-row">
+                <span class="tag">AI Tools</span
+                ><span class="tag">Workflow Logic</span>
+              </div>
+              <div class="node-links">
+                <a
+                  href="https://github.com/LuminaLyric/Zapier-Learning-tracker"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ GitHub</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_04</span>
+                <span class="node-status live">live</span>
+              </div>
+              <div class="node-title">PitchArena AI</div>
+              <p class="node-desc">
+                An AI-based startup pitch game / chatbot, built and tested as a
+                hands-on exercise in prompt engineering and user interaction.
+              </p>
+              <div class="tag-row">
+                <span class="tag">AI Tools</span
+                ><span class="tag">Prompt Engineering</span>
+              </div>
+              <div class="node-links">
+                <a
+                  href="https://github.com/LuminaLyric/PitchArena-Ai"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ GitHub</a
+                >
+                <a
+                  href="https://pitch-arena-ai.zapier.app"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ Live demo</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_05</span>
+                <span class="node-status live">live</span>
+              </div>
+              <div class="node-title">CarnifreshX</div>
+              <p class="node-desc">
+                A storefront concept for an online meat shop, built to nail the
+                everyday details — a clean product layout, a mobile hamburger
+                menu, and a responsive grid that holds up from phone to desktop.
+              </p>
+              <div class="tag-row">
+                <span class="tag">HTML</span
+                ><span class="tag">Tailwind CSS</span
+                ><span class="tag">JavaScript</span>
+              </div>
+              <div class="node-links">
+                <a
+                  href="https://github.com/LuminaLyric/CarnifreshX"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ GitHub</a
+                >
+                <a
+                  href="https://luminalyric.github.io/CarnifreshX"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ Live demo</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <article class="node">
+            <span class="node-dot"></span>
+            <div class="node-card">
+              <div class="node-head">
+                <span class="node-id">node_06</span>
+                <span class="node-status live">live</span>
+              </div>
+              <div class="node-title">BookTracker</div>
+              <p class="node-desc">
+                A lightweight web app for logging what you're reading — add
+                titles, mark progress, and keep a running shelf of finished
+                books, all in a simple, distraction-free interface.
+              </p>
+              <div class="tag-row">
+                <span class="tag">HTML</span><span class="tag">CSS</span
+                ><span class="tag">JavaScript</span>
+              </div>
+              <div class="node-links">
+                <a
+                  href="https://github.com/LuminaLyric/BookTracker"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ GitHub</a
+                >
+                <a
+                  href="https://luminalyric.github.io/BookTracker"
+                  target="_blank"
+                  rel="noopener"
+                  >↗ Live demo</a
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section id="contact">
+        <p class="eyebrow">contact.md</p>
+        <h2>Let's build something</h2>
+        <div class="term-commands">
+          <a class="cmd-row" href="mailto:adithya.k.saravanan@gmail.com">
+            <span class="cmd-left"
+              ><span class="prompt">$</span> open
+              <span class="target"
+                >mailto:adithya.k.saravanan@gmail.com</span
+              ></span
+            >
+            <span class="cmd-arrow">↗</span>
+          </a>
+          <a
+            class="cmd-row"
+            href="https://www.linkedin.com/in/adithya-saravanan"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="cmd-left"
+              ><span class="prompt">$</span> open
+              <span class="target"
+                >linkedin.com/in/adithya-saravanan</span
+              ></span
+            >
+            <span class="cmd-arrow">↗</span>
+          </a>
+          <a
+            class="cmd-row"
+            href="https://github.com/LuminaLyric"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="cmd-left"
+              ><span class="prompt">$</span> open
+              <span class="target">github.com/LuminaLyric</span></span
+            >
+            <span class="cmd-arrow">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="footer-commit">
+          <span class="branch">(main)</span>
+          <span class="hash">commit a1d1thya</span><br />
+          Author: S Adithya &lt;adithya.k.saravanan@gmail.com&gt;<br />
+          <span class="msg">"Always learning, always building."</span>
+        </div>
+        <p class="footer-note">
+          © 2026 S Adithya — built from scratch, no template.
+        </p>
+      </footer>
+    </main>
+
     <script>
-function toggleMenu() {
-  document.querySelector(".nav-links").classList.toggle("active");
-}
-</script>
- </body>
+      (function () {
+        var reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        /* ---------- mobile nav ---------- */
+        var sidebar = document.getElementById("sidebar");
+        var overlay = document.getElementById("overlay");
+        var menuToggle = document.getElementById("menuToggle");
+        var sidebarClose = document.getElementById("sidebarClose");
+
+        function openMenu() {
+          sidebar.classList.add("open");
+          overlay.classList.add("show");
+          menuToggle.setAttribute("aria-expanded", "true");
+        }
+        function closeMenu() {
+          sidebar.classList.remove("open");
+          overlay.classList.remove("show");
+          menuToggle.setAttribute("aria-expanded", "false");
+        }
+        menuToggle.addEventListener("click", function () {
+          sidebar.classList.contains("open") ? closeMenu() : openMenu();
+        });
+        sidebarClose.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", closeMenu);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeMenu();
+        });
+
+        var treeLinks = document.querySelectorAll(".tree-link");
+        treeLinks.forEach(function (link) {
+          link.addEventListener("click", function () {
+            if (window.innerWidth < 1024) closeMenu();
+          });
+        });
+
+        /* ---------- scrollspy ---------- */
+        var sections = Array.prototype.slice.call(
+          document.querySelectorAll("section[id]"),
+        );
+        var linkMap = {};
+        treeLinks.forEach(function (l) {
+          linkMap[l.dataset.section] = l;
+        });
+
+        if ("IntersectionObserver" in window) {
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                var link = linkMap[entry.target.id];
+                if (!link) return;
+                if (entry.isIntersecting) {
+                  treeLinks.forEach(function (l) {
+                    l.classList.remove("active");
+                  });
+                  link.classList.add("active");
+                }
+              });
+            },
+            { rootMargin: "-40% 0px -50% 0px", threshold: 0 },
+          );
+          sections.forEach(function (s) {
+            observer.observe(s);
+          });
+        }
+
+        /* ---------- hero terminal typing ---------- */
+        var termBody = document.getElementById("termBody");
+        var script = [
+          { prompt: "$", cmd: "whoami", out: "S Adithya" },
+          {
+            prompt: "$",
+            cmd: "cat focus.txt",
+            out: "Frontend developer in training — building automation workflows, AI agents, and systems that remove busywork.",
+          },
+          {
+            prompt: "$",
+            cmd: "status --current",
+            out: "Class of 2026 · Chennai, IN · open to internships & collabs",
+          },
+        ];
+
+        function renderStatic() {
+          termBody.innerHTML = "";
+          script.forEach(function (line) {
+            var wrap = document.createElement("div");
+            wrap.className = "term-line";
+            wrap.innerHTML =
+              '<span class="term-prompt">' +
+              line.prompt +
+              '</span> <span class="term-cmd">' +
+              line.cmd +
+              "</span>" +
+              '<span class="term-out">' +
+              line.out +
+              "</span>";
+            termBody.appendChild(wrap);
+          });
+          var cursor = document.createElement("span");
+          cursor.className = "cursor";
+          termBody.lastElementChild
+            .querySelector(".term-out")
+            .appendChild(cursor);
+        }
+
+        function typeSequence() {
+          var i = 0;
+          function nextLine() {
+            if (i >= script.length) return;
+            var line = script[i];
+            var wrap = document.createElement("div");
+            wrap.className = "term-line";
+            var promptEl = document.createElement("span");
+            promptEl.className = "term-prompt";
+            promptEl.textContent = line.prompt + " ";
+            var cmdEl = document.createElement("span");
+            cmdEl.className = "term-cmd";
+            var cursor = document.createElement("span");
+            cursor.className = "cursor";
+            wrap.appendChild(promptEl);
+            wrap.appendChild(cmdEl);
+            wrap.appendChild(cursor);
+            termBody.appendChild(wrap);
+
+            var ci = 0;
+            function typeChar() {
+              if (ci < line.cmd.length) {
+                cmdEl.textContent += line.cmd[ci];
+                ci++;
+                setTimeout(typeChar, 28);
+              } else {
+                cursor.remove();
+                var outEl = document.createElement("span");
+                outEl.className = "term-out";
+                outEl.textContent = line.out;
+                var outCursor = document.createElement("span");
+                outCursor.className = "cursor";
+                outEl.appendChild(outCursor);
+                wrap.appendChild(outEl);
+                i++;
+                setTimeout(function () {
+                  if (i < script.length) {
+                    outCursor.remove();
+                  }
+                  nextLine();
+                }, 420);
+              }
+            }
+            typeChar();
+          }
+          nextLine();
+        }
+
+        if (reduceMotion) {
+          renderStatic();
+        } else {
+          typeSequence();
+        }
+      })();
+    </script>
+  </body>
 </html>
